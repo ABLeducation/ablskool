@@ -526,10 +526,46 @@ class AdvocacyVisitForm(forms.ModelForm):
     duration = DurationField(widget=DurationWidget())
     class Meta:
         model = AdvocacyVisit
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['verified_by', 'gallery','handling_comm_2']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'})
         }
+        
+        labels = {
+            'name': 'Name of Mentor',
+            'grade': 'Grade',
+            'section': 'Section',
+            'school': 'School Name',
+            'date': 'Date of Visit',
+            'topics': 'Topics Covered',
+            'topics_microplanner': 'Topic as per Microplanner',
+            'classroom_management': 'Classroom Management',
+            'content_delievery': 'Content Delivery',
+            'student_teacher_relation': 'Student-Teacher Relation',
+            'dresscode': 'Dress Code',
+            'handling_comm': 'Handling Communication(with School and HO)',
+            'Regularity': 'Regularity',
+            'Punctuality': 'Punctuality',
+            'daily_report': 'Daily Report',
+            'daily_progress_sheet': 'Daily Progress Sheet',
+            'overall_behaviour': 'Overall Behaviour',
+            'next_month_microplanner': 'Next Month Microplanner',
+            'kreativityshow': 'Kreativity Show',
+            'compiled_report': 'Compiled Report',
+            'daily_win_sharing': 'Daily Win Sharing',
+            'photo_video_recording': 'Photo/Video Recording',
+            'name_advocacy': 'Name of Advocacy',
+            'pedagogical_poweress': 'Pedagocical Prowess',
+            'additional_info': 'No. of sessions, activities & Projects taken up this month class-wise?',
+            'project_taken_club': 'Projects Taken in Innovation Club',
+            'learning_outcomes': "Learning Outcome of today's class",
+            'competition': 'Progress in Competition',
+            'feedback': 'Feedback from Students',
+            'improvement_tips': 'Feedback from Principal and Teachers',
+            'remarks': 'Remarks',
+        }
+
         
 class TimetableForm(forms.ModelForm):
     class Meta:

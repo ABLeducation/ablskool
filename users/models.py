@@ -369,14 +369,6 @@ class AdvocacyVisit(models.Model):
         ),
         default=0
     )
-    pedagogical_poweress=models.TextField()
-    additional_info=models.TextField()
-    project_taken_club=models.TextField()
-    learning_outcomes=models.TextField()
-    competition=models.TextField()
-    feedback=models.TextField()
-    improvement_tips=models.TextField()
-    remarks=models.TextField()
     dresscode=models.IntegerField(
         choices=(
             (0, '0'),(1, '1'),(2, '2'),(3, '3'),(4, '4'),(5, '5')
@@ -389,13 +381,13 @@ class AdvocacyVisit(models.Model):
         ),
         default=0
     )
-    handling_comm_2=models.IntegerField(
+    Regularity=models.IntegerField(
         choices=(
             (0, '0'),(1, '1'),(2, '2'),(3, '3'),(4, '4'),(5, '5')
         ),
         default=0
     )
-    regularity_punctuality=models.IntegerField(
+    Punctuality=models.IntegerField(
         choices=(
             (0, '0'),(1, '1'),(2, '2'),(3, '3'),(4, '4'),(5, '5')
         ),
@@ -449,6 +441,15 @@ class AdvocacyVisit(models.Model):
         ),
         default=0
     )
+    pedagogical_poweress=models.TextField()
+    additional_info=models.TextField()
+    project_taken_club=models.TextField()
+    learning_outcomes=models.TextField()
+    competition=models.TextField()
+    feedback=models.TextField()
+    improvement_tips=models.TextField()
+    remarks=models.TextField()
+    
     name_advocacy=models.CharField(max_length=100)
     verified_by=models.BooleanField(default=False)
     gallery=models.URLField()
