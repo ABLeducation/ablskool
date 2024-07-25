@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block body %}
+<section id="advocacy">
+<div class="container">
+    <h2>Advocacy Visit Form</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_name">Name</label>
+        {{ form.name }}
+        
+        <label for="id_grade">Grade</label>
+        {{ form.grade }}
+        
+        <label for="id_section">Section</label>
+        {{ form.section }}
+        
+        <label for="id_school">School</label>
+        {{ form.school }}
+        
+        <label for="id_date">Date</label>
+        {{ form.date }}
+        
+        <label for="id_duration">Duration</label>
+        {{ form.duration }}
+        <br>
+        
+        <label for="id_topics">Topics</label>
+        {{ form.topics }}
+        
+        <label for="id_topics_microplanner">Topics Microplanner</label>
+        {{ form.topics_microplanner }}
+
+        <label for="id_classroom_management">Classroom Management</label>
+        {{ form.classroom_management }}
+
+        <label for="id_content_delievery">Content Delivery and Technique</label>
+        {{ form.content_delievery }}
+
+        <label for="id_student_teacher_relation">Student-Teacher Relationship</label>
+        {{ form.student_teacher_relation }}
+        
+        <label for="id_dresscode">Dress Code</label>
+        {{ form.dresscode }}
+
+        <label for="id_handling_comm">The way handling Communication<br>
+            (i) of School with HO</label>
+        {{ form.handling_comm }}
+        
+        <label for="id_handling_comm">The way handling Communication<br>
+            (ii) of HO with School</label>
+        {{ form.handling_comm_2 }}
+
+        <label for="id_regularity_punctuality">Regularity & Punctuality</label>
+        {{ form.regularity_punctuality }}
+
+        <label for="id_daily_report">Daily Work Report</label>
+        {{ form.daily_report }}
+
+        <label for="id_daily_progress_sheet">Daily School progress sheet</label>
+        {{ form.daily_progress_sheet }}
+
+        <label for="id_overall_behaviour">Overall Behaviour as per SOP</label>
+        {{ form.overall_behaviour }}
+
+        <label for="id_next_month_microplanner">Next month micro plan submitted</label>
+        {{ form.next_month_microplanner }}
+
+        <label for="id_kreativityshow">Kreativity Show on PTM</label>
+        {{ form.kreativityshow }}
+
+        <label for="id_compiled_report">Compiled progress for the school</label>
+        {{ form.compiled_report }}
+
+        <label for="id_daily_win_sharing">Daily Win sharing: Share your daily wins in the school WA group
+        </label>
+        {{ form.daily_win_sharing }}
+
+        <label for="id_photo_video_recording">Photos of the class & student interview recorded for social media</label>
+        {{ form.photo_video_recording }}
+
+
+        <label for="id_pedagogical_poweress">Pedagogical Prowess of the mentor</label>
+        {{ form.pedagogical_poweress }}
+
+        <label for="id_additional_info">No. of sessions, activities & Projects taken up this month class-wise?</label>
+        {{ form.additional_info }}
+
+        <label for="id_project_taken_club">Club-wise No. of students selected? Projects undertaken in club</label>
+        {{ form.project_taken_club }}
+
+        <label for="id_learning_outcomes">Learning Outcome class-wise of other classes, milestones achieved</label>
+        {{ form.learning_outcomes }}
+
+        <label for="id_competition">Opportunities received for participation in the competition? Their Status?</label>
+        {{ form.competition }}
+
+        <label for="id_feedback">Feedback/Suggestions from School (Teacher-coordinator & Principal)</label>
+        {{ form.feedback }}
+
+        <label for="id_improvement_tips">Recommendations for improvements from Person visited for Advocacy</label>
+        {{ form.improvement_tips }}
+
+        <label for="id_remarks">Remarks by Mentor & requirements, if any</label>
+        {{ form.remarks }}
+
+        <label for="id_name_advocacy">Advocacy Observer</label>
+        {{ form.name_advocacy }}
+        
+        <button type="submit">Submit</button>
+    </form>
+</div>
+</section>
+
+{% endblock %}

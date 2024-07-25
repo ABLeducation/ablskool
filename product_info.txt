@@ -1,0 +1,16 @@
+Product Information
+-------------------
+Name: MechanzO 12+
+Price: 7490.00  
+ 7115.00
+Description: MechanzO Robotic Kits are the perfect way to learn about Robotics.When one builds and assembles a Robot with Sensing & Controlling capabilities, one learns various aspects of Science, Technology, Engineering & Math aka (STEM) which is regarded as the IDEAL PATH for 'Experiential Learning' globally - Learning by way of doing, and in a 'fun' way. The kit aims at fostering creativity and building sharp IQ in children. children will have a lot of fun working on MechanzO 12+ and using this kit a number of programmable 'multi-function' robots or 'Bots' in short can be built.
+Students are exposed to near real-world problem-solving ecosystem including an easy-to-use GUI programming environment, LinkUP as well as a number of input, output & access elements, helping them build 'automation' bots, besides off-course clearing any grey areas that may exist on the science concepts taught in the classrooms.
+This kit is best suited for students of ages 10 and above:-
+Key features of the 'MechanzO 12+' kit are:-
+
+Contains 200+ parts such as Programmable Controller Disc, Sensors, Motors, Gears, Harnesses & Wheels, Metallic Plates, Bars & Shafts, Displays etc.
+Accompanied with ABL Education's in-house developed light-weight GUI Programming Environment with drag & drop blocks, Free-hand links, debugging therby helping create flow-based logic within no time
+A number of sample models which help the students get started with - 3D Robotic Arm , Crazy Car , Drawing Robot , Human Robot ,Line Follower Robot ,Obstacle Avoider Robot , Separator , Walker , Surface Color Identifier and Photophobe Robot.
+An Assembly Guide providing step-by-step instructions to build the models, also explaining the science concepts behind every model
+The kit conforms to all common safety & environmental standards, is completely safe to use.
+Specifications:

@@ -1,0 +1,54 @@
+{% extends 'school/base_template.html' %}
+
+{% block main_content %}
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Student's Activity</h3>
+          </div>
+          <div class="card-body">
+            <form method="GET" class="form-inline mb-3">
+              <div class="form-group mr-2">
+                <label for="grade" class="mr-2">Grade:</label>
+                {{ form.grade }}
+              </div>
+              <div class="form-group mr-2">
+                <label for="section" class="mr-2">Section:</label>
+                {{ form.section }}
+              </div>
+              <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Login DateTime</th>
+                    <th>Student Name</th>
+                    <th>Class</th>
+                    <th>Section</th>
+                    <th>Login Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for activity in login_activities %}
+                  <tr>
+                    <td>{{ activity.login_datetime }}</td>
+                    <td>{{ activity.get_student_name }}</td>
+                    <td>{{ activity.get_grade }}</td>
+                    <td>{{ activity.get_section }}</td>
+                    <td>{{ activity.login_num }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock main_content %}
