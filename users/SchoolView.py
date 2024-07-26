@@ -9,7 +9,6 @@ from curriculum import views
 from django.core.cache import cache
 from django.contrib.admin.models import LogEntry
 import datetime as dt
-# from .signals import succesful_logout
 from assessment.models import *
 from django.db.models import Max
 from django.db.models import Q
@@ -18,6 +17,7 @@ from django.db.models import Count
 from collections import defaultdict
 from django.core.mail import send_mail
 from users.forms import *
+from django.db.models import OuterRef, Subquery
 
 def school_home(request,subject_id=None):
     user=request.user
@@ -476,8 +476,6 @@ def observation_performance_chart(request, user_id):
         'headers': headers,
         'rows': rows,
     })
-    
-from django.db.models import OuterRef, Subquery
 
 def school_login_activity(request):
     user = request.user
