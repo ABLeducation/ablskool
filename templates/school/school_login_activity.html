@@ -30,16 +30,24 @@
                     <th>Class</th>
                     <th>Section</th>
                     <th>Login Number</th>
+                    <th>Student Report</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for activity in login_activities %}
+                  {% for item in activities_with_user_id %}
                   <tr>
-                    <td>{{ activity.login_datetime }}</td>
-                    <td>{{ activity.get_student_name }}</td>
-                    <td>{{ activity.get_grade }}</td>
-                    <td>{{ activity.get_section }}</td>
-                    <td>{{ activity.login_num }}</td>
+                    <td>{{ item.login_activity.login_datetime }}</td>
+                    <td>{{ item.login_activity.get_student_name }}</td>
+                    <td>{{ item.login_activity.get_grade }}</td>
+                    <td>{{ item.login_activity.get_section }}</td>
+                    <td>{{ item.login_activity.login_num }}</td>
+                    <td>
+                      <a href="{% url 'users:student_activity' item.user_id %}">Get Report</a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6">No activities found.</td>
                   </tr>
                   {% endfor %}
                 </tbody>

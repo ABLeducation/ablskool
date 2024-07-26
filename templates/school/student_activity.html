@@ -5,29 +5,31 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <div class="card card-primary">
-          <div class="card-header">
-            <h3 class="card-title">User Activity for {{ user_id }}</h3>
+        <div class="card card-primary shadow-sm">
+          <div class="card-header bg-primary text-white">
+            <h3 class="card-title">
+              <i class="fas fa-user-clock"></i> User Activity for {{ user_id }}
+            </h3>
           </div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-hover">
-                <thead class="thead-light">
+              <table class="table table-hover table-bordered table-striped">
+                <thead class="thead-dark">
                   <tr>
                     <th>Date</th>
-                    <th>Login Time</th>
-                    <th>Logout Time</th>
+                    {% comment %} <th>Login Time</th> {% endcomment %}
                     <th>Page Visited</th>
-                    <th>Time Spent on Curriculum</th>
+                    <th>Time Spent</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for activity in activities %}
                   <tr>
                     <td>{{ activity.date|date:"Y-m-d H:i:s" }}</td>
-                    <td>{{ activity.login_time|date:"Y-m-d H:i:s" }}</td>
-                    <td>{{ activity.logout_time|date:"Y-m-d H:i:s" }}</td>
-                    <td>{{ activity.page_visited }}</td>
+                    {% comment %} <td>{{ activity.login_time|date:"Y-m-d H:i:s" }}</td> {% endcomment %}
+                    <td>
+                      <span class="badge badge-info">{{ activity.page_visited }}</span>
+                    </td>
                     <td>{{ activity.curriculum_time_spent }}</td>
                   </tr>
                   {% endfor %}
@@ -35,9 +37,39 @@
               </table>
             </div>
           </div>
+          {% comment %} <div class="card-footer text-right">
+            <a href="{% url 'user_activity_report' user_id %}" class="btn btn-primary">
+              <i class="fas fa-file-download"></i> Download Report
+            </a>
+          </div> {% endcomment %}
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .card-primary {
+    border-color: #007bff;
+  }
+  .card-header.bg-primary {
+    background-color: #007bff !important;
+  }
+  .card-title i {
+    margin-right: 0.5rem;
+  }
+  .badge-info {
+    background-color: #17a2b8;
+  }
+  .table thead th {
+    vertical-align: middle;
+    text-align: center;
+  }
+  .table tbody td {
+    vertical-align: middle;
+  }
+  .table td, .table th {
+    text-align: center;
+  }
+</style>
 {% endblock main_content %}

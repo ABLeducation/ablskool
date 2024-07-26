@@ -240,7 +240,6 @@ from django.utils import timezone
 @login_required
 def user_logout(request):
     user = request.user
-    logger.info(f'Logout view called for user: {user.username}')
     # current_time = timezone.now()
 
     # Fetch the latest login activity for the user

@@ -269,7 +269,7 @@ def student_detail_report(request,user_id):
     return render(request, "school/details_mark.html",{"users":users,"marks":marks,"school":school_obj, "login_activities": login_activities,})
 
 def student_activity_view(request, user_id):
-    activities = UserActivity1.objects.filter(user_id=user_id).order_by('-date')
+    activities = UserActivity1.objects.filter(user=user_id).order_by('-date')
     context = {
         'activities': activities,
         'user_id': user_id
@@ -477,6 +477,8 @@ def observation_performance_chart(request, user_id):
         'rows': rows,
     })
     
+from django.db.models import OuterRef, Subquery
+
 def school_login_activity(request):
     user = request.user
     try:
@@ -498,10 +500,27 @@ def school_login_activity(request):
             student_profiles = student_profiles.filter(section=section)
 
     login_usernames = [student.user.username for student in student_profiles]
-    login_activities = UserLoginActivity.objects.filter(login_username__in=login_usernames).order_by('-login_datetime')
+    
+    # Subquery to get the latest login datetime for each user
+    latest_login_subquery = UserLoginActivity.objects.filter(login_username=OuterRef('login_username')).order_by('-login_datetime').values('login_datetime')[:1]
+    
+    # Get the latest login activity for each user
+    latest_login_activities = UserLoginActivity.objects.filter(
+        login_username__in=login_usernames,
+        login_datetime=Subquery(latest_login_subquery)
+    ).distinct()
+
+    # Include user ID in the context
+    activities_with_user_id = [
+        {
+            'login_activity': activity,
+            'user_id': User.objects.get(username=activity.login_username).id
+        }
+        for activity in latest_login_activities
+    ]
 
     context = {
-        "login_activities": login_activities,
+        "activities_with_user_id": activities_with_user_id,
         "school_profile": school_profile,
         "form": form,
     }
