@@ -6,13 +6,14 @@ from django.urls import reverse
 import datetime 
 from django.contrib.auth.decorators import login_required
 from assessment.models import *
-
 from curriculum.models import *
 from users.models import *
 from django.core.cache import cache
 from django.contrib.admin.models import LogEntry
 import datetime as dt
 from django.db.models import Q,Max,Count,F,Avg
+from users.forms import *
+from django.db.models import OuterRef, Subquery
 
 
 def student_home(request,subject_id=None):
@@ -47,7 +48,7 @@ def student_home(request,subject_id=None):
 
     # for l in logs:
     #     actionTime=l.action_time
-    logs=UserLoginActivity.objects.filter(login_username=request.user)
+    logs=UserLoginActivity.objects.filter(login_username=request.user).count()
 
     count_absent=cache.get('absent', version=user.username)
     present_count=cache.get('present', version=user.username)
@@ -96,7 +97,8 @@ def student_home(request,subject_id=None):
         "data_absent": data_absent,
         "profile":student_obj,
         # "recent_visit":actionTime,
-        "unread_notifications":unread_notifications
+        "unread_notifications":unread_notifications,
+        "logs":logs
     }
     return render(request, "student_template/student_home_template.html", context)
 
@@ -295,3 +297,48 @@ def subjects(request):
     subjects=Subject.objects.filter(standard=grade)
 
     return render(request, "student_template/subjects.html", {"subjects":subjects})
+
+
+def student_login_activity(request):
+    user = request.user
+
+    try:
+        student_profile = user_profile_student.objects.get(user=user)
+    except user_profile_student.DoesNotExist:
+        return render(request, "school/no_permission.html", {"message": "You do not have permission to view this page."})
+
+    login_usernames = [user.username]
+    
+    # Subquery to get the latest login datetime for the logged-in user
+    latest_login_subquery = UserLoginActivity.objects.filter(login_username=OuterRef('login_username')).order_by('-login_datetime').values('login_datetime')[:1]
+    
+    # Get the latest login activity for the logged-in user
+    latest_login_activities = UserLoginActivity.objects.filter(
+        login_username__in=login_usernames,
+        login_datetime=Subquery(latest_login_subquery)
+    ).distinct().order_by('-login_datetime')
+
+    # Include user ID in the context
+    activities_with_user_id = [
+        {
+            'login_activity': activity,
+            'user_id': User.objects.get(username=activity.login_username).id
+        }
+        for activity in latest_login_activities
+    ]
+
+    context = {
+        "activities_with_user_id": activities_with_user_id,
+        "student_profile": student_profile,
+    }
+
+    return render(request, "student_template/school_login_activity.html", context)
+
+
+def student_activity_view(request, user_id):
+    activities = UserActivity1.objects.filter(user=user_id).order_by('-date')
+    context = {
+        'activities': activities,
+        'user_id': user_id
+    }
+    return render(request, 'student_template/student_activity.html', context)

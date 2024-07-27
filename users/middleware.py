@@ -16,7 +16,8 @@ class ActivityMiddleware:
 
         if request.user.is_authenticated:
             current_time = timezone.now()
-            curriculum_pattern = re.compile(r'^/curriculum/\d+/\w+/.+/$')
+            # Updated regex to be more specific
+            curriculum_pattern = re.compile(r'^/curriculum/\d+/[^/]+/(?P<lesson_name>[\w-]+)/$')
 
             try:
                 last_activity_str = request.session.get('last_activity', None)
@@ -55,17 +56,24 @@ class ActivityMiddleware:
                         logger.error(f'Error updating logout time for user: {request.user.username}, error: {e}')
 
                 elif curriculum_pattern.match(request.path):
-                    if last_activity:
-                        time_spent = current_time - last_activity
+                    match = curriculum_pattern.match(request.path)
+                    lesson_name = match.group('lesson_name') if match else None
+
+                    if lesson_name:
+                        if last_activity:
+                            time_spent = current_time - last_activity
+                        else:
+                            time_spent = timedelta(seconds=0)
+                        
+                        UserActivity1.objects.create(
+                            user=request.user,
+                            date=current_time,
+                            page_visited=lesson_name,
+                            curriculum_time_spent=time_spent
+                        )
+                        logger.info(f'Curriculum activity recorded for user: {request.user.username}, lesson: {lesson_name}, time_spent: {time_spent}')
                     else:
-                        time_spent = timedelta(seconds=0)
-                    UserActivity1.objects.create(
-                        user=request.user,
-                        date=current_time,
-                        page_visited=request.path,
-                        curriculum_time_spent=time_spent
-                    )
-                    logger.info(f'Curriculum activity recorded for user: {request.user.username}, page: {request.path}, time_spent: {time_spent}')
+                        logger.info(f'Non-lesson page visited: {request.path}')
 
                 request.session['last_activity'] = current_time.isoformat()
                 request.session['last_page_visited'] = request.path

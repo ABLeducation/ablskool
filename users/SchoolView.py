@@ -506,7 +506,7 @@ def school_login_activity(request):
     latest_login_activities = UserLoginActivity.objects.filter(
         login_username__in=login_usernames,
         login_datetime=Subquery(latest_login_subquery)
-    ).distinct()
+    ).distinct().order_by('-login_datetime') 
 
     # Include user ID in the context
     activities_with_user_id = [

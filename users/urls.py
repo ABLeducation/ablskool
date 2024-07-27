@@ -45,6 +45,8 @@ urlpatterns = [
     path('notification_read/<int:id>/', StudentViews.mark_notification_as_read, name="notification_read"),
     path("student_leaderboard/",StudentViews.leaderboard, name="student_leaderboard"),
     path("subjects/",StudentViews.subjects, name="subjects"),
+    path('sstudent_login_activity/', StudentViews.student_login_activity, name='sstudent_login_activity'),
+    path('sstudent_activity/<str:user_id>/', StudentViews.student_activity_view, name='sstudent_activity'),
     
     # URLS for School
     path('school_home/', SchoolView.school_home, name="school_home"),
@@ -129,4 +131,6 @@ urlpatterns = [
     path('innovation_form/', TeacherView.innovationclub_create_view ,name='innovation_form'),
     path('kreativityshow_form/', TeacherView.kreativityshow_create_view ,name='kreativityshow_form'),
     path('guestsession_form/', TeacherView.guestsession_create_view ,name='guestsession_form'),
+    path('student_login_activity/', TeacherView.student_login_activity, name='student_login_activity'),
+    path('tstudent_activity/<str:user_id>/', TeacherView.student_activity_view, name='tstudent_activity'),
 ]

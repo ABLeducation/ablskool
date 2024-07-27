@@ -18,6 +18,7 @@ import openpyxl
 import logging
 from django.db.models import Count
 from collections import defaultdict
+from django.db.models import OuterRef, Subquery
 
 def teacher_home(request,subject_id=None):
     teacher_obj = user_profile_teacher.objects.get(user=request.user)
@@ -627,3 +628,59 @@ def guestsession_create_view(request):
         form =GuestSessionForm()
     
     return render(request, 'teacher_template/guestsession_form.html', {'form': form})
+
+def student_login_activity(request):
+    user = request.user
+    try:
+        teacher_profile = user_profile_teacher.objects.get(user=user)
+    except user_profile_school.DoesNotExist:
+        return render(request, "school/no_permission.html", {"message": "You do not have permission to view this page."})
+
+    form = StudentFilterForm(request.GET or None)
+    student_profiles = user_profile_student.objects.filter(school=teacher_profile.school)
+    
+    if form.is_valid():
+        grade = form.cleaned_data.get('grade')
+        section = form.cleaned_data.get('section')
+        
+        if grade:
+            student_profiles = student_profiles.filter(grade=grade)
+        
+        if section:
+            student_profiles = student_profiles.filter(section=section)
+
+    login_usernames = [student.user.username for student in student_profiles]
+    
+    # Subquery to get the latest login datetime for each user
+    latest_login_subquery = UserLoginActivity.objects.filter(login_username=OuterRef('login_username')).order_by('-login_datetime').values('login_datetime')[:1]
+    
+    # Get the latest login activity for each user
+    latest_login_activities = UserLoginActivity.objects.filter(
+        login_username__in=login_usernames,
+        login_datetime=Subquery(latest_login_subquery)
+    ).distinct().order_by('-login_datetime') 
+
+    # Include user ID in the context
+    activities_with_user_id = [
+        {
+            'login_activity': activity,
+            'user_id': User.objects.get(username=activity.login_username).id
+        }
+        for activity in latest_login_activities
+    ]
+
+    context = {
+        "activities_with_user_id": activities_with_user_id,
+        "school_profile": teacher_profile,
+        "form": form,
+    }
+
+    return render(request, "teacher_template/school_login_activity.html", context)
+
+def student_activity_view(request, user_id):
+    activities = UserActivity1.objects.filter(user=user_id).order_by('-date')
+    context = {
+        'activities': activities,
+        'user_id': user_id
+    }
+    return render(request, 'teacher_template/student_activity.html', context)
