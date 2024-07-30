@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate,logout,login
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from users.models import Contact,User,Enquiry
-# from users.forms import *
+from users.forms import *
 from django.views.generic import CreateView
 from django.contrib import messages
 from users.Emailbackend import *
