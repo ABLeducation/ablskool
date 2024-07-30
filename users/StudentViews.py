@@ -12,7 +12,7 @@ from django.core.cache import cache
 from django.contrib.admin.models import LogEntry
 import datetime as dt
 from django.db.models import Q,Max,Count,F,Avg
-from users.forms import *
+# from users.forms import *
 from django.db.models import OuterRef, Subquery
 
 
