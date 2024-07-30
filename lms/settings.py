@@ -119,7 +119,7 @@ DATABASES = {
         'NAME': 'ablskool', 
         'USER': 'postgres',
         'PASSWORD': 'Trust@786',
-        'HOST': '127.0.0.1', 
+        'HOST': 'localhost', 
         'PORT': '5432',
     }
 }
