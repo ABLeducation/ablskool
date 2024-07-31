@@ -86,7 +86,6 @@ def student_home(request,subject_id=None):
     else:
         average_percentage = 0
     
-
     context={
         "total_attendance": total_subjects,
         "attendance_present": average_percentage,
