@@ -117,8 +117,8 @@ CACHES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ablskool', 
-        'USER': 'postgres',
+        'NAME': 'abllms', 
+        'USER': 'sahil',
         'PASSWORD': 'Trust@786',
         'HOST': 'localhost', 
         'PORT': '5432',
