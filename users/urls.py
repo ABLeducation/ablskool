@@ -31,6 +31,7 @@ urlpatterns = [
     path('enquiry',views.enquiry, name="enquiry"),
     path('message',views.message, name="message"),
     path('advocacy',views.create_advocacy_visit, name="advocacy"),
+    path('code-editor/', views.code_editor_view, name='code_editor'),
     
     # URLS for Student
     path('student_home/', StudentViews.student_home, name="student_home"),

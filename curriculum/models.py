@@ -5,8 +5,25 @@ from autoslug import AutoSlugField
 from users.models import User,user_profile_student
 import os
 from django.urls import reverse
+from users.models import user_profile_school
 
 # Create your models here.
+class School(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name_plural = '1. Schools'
+    
+    def __str__(self):
+        return self.name
+        
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+        
+        
 class Standard(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = AutoSlugField(populate_from=name,unique=True,null=True, default=None)
@@ -37,6 +54,7 @@ class Subject(models.Model):
     image = models.ImageField(upload_to=save_subject_image, blank=True, verbose_name='Subject Image')
     description = models.TextField(max_length=500,blank=True)
     display_on_frontend = models.BooleanField(default=True, verbose_name="Display on Frontend")
+    schools = models.ManyToManyField(School)
     
     class Meta:
         verbose_name_plural = '2. Subjects'
@@ -91,6 +109,7 @@ class Lesson(models.Model):
     Notes = models.FileField(upload_to=save_lesson_files,verbose_name="Notes", blank=True)
     assessment=models.URLField(verbose_name="Assessment", max_length=300,default="",null=True,blank=True)
     display_on_frontend = models.BooleanField(default=True, verbose_name="Display on Frontend")
+    schools = models.ManyToManyField(School)
 
     class Meta:
         ordering = ['position']
@@ -304,4 +323,4 @@ class TeacherLesson(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-        
+       

@@ -338,3 +338,8 @@ def create_advocacy_visit(request):
     else:
         form = AdvocacyVisitForm()
     return render(request, 'users/advocay.html', {'form': form})
+
+
+def code_editor_view(request):
+    form = CodeForm()
+    return render(request, 'users/code_editor.html', {'form': form})

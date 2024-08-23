@@ -755,3 +755,6 @@ class StudentFilterForm(forms.Form):
         choices=[('', 'All Sections')] + [(section, section) for section in sorted(user_profile_student.objects.values_list('section', flat=True).distinct())],
         required=False,
     )
+    
+class CodeForm(forms.Form):
+    code = forms.CharField(widget=forms.Textarea, label='Write your code here')

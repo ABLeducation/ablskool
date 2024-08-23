@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.templatetags.static import static
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +35,7 @@ AUTH_USER_MODEL ='users.User'
 # Application definition
 
 INSTALLED_APPS = [
+    "unfold",
     'adminlte3',
     'admin_interface',
     'colorfield',
@@ -55,11 +59,14 @@ INSTALLED_APPS = [
     'django_social_share',
     'assessment',
     'ebook',
-    'silk'
+    'silk',
+    'channels'
 ]
 
 SITE_ID = 1
 SOCIALACCOUNT_LOGIN_ON_GET=True
+
+ASGI_APPLICATION = 'lms.asgi.application'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -229,5 +236,47 @@ LOGGING = {
     'root': {
         'handlers': ['console'],
         'level': 'DEBUG',
+    },
+}
+
+# Redis channel layer configuration
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+
+UNFOLD = {
+    "SITE_TITLE": "ABL Admin",
+    "SITE_HEADER": "ABL Admin",
+    
+    "SIDEBAR": {
+        "show_search": True,  # Search in applications and models names
+        "show_all_applications": True,  # Dropdown with all applications and models
+        "navigation": [
+            {
+                "title": "All Applications",
+                "separator": True,  # Top border
+                "collapsible": True,  # Collapsible group of links
+                "items": [
+                    {
+                        "title": "Models",
+                        "icon": "dashboard",  # Supported icon set: https://fonts.google.com/icons
+                        "link": reverse_lazy("admin:index"),
+                        # "badge": "sample_app.badge_callback",
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                    {
+                        "title": _("Users"),
+                        "icon": "people",
+                        "link": reverse_lazy("admin:users_user_changelist"),
+                    },
+                ],
+            },
+        ],
     },
 }

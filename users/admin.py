@@ -5,17 +5,19 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.http import HttpResponse
 import openpyxl
 from django.utils.translation import gettext_lazy as _
+from unfold.admin import ModelAdmin
 
-class studentadmin(admin.ModelAdmin):
+
+class studentadmin(ModelAdmin):
     list_display=('first_name', 'school')
     list_filter=(('school',DropdownFilter),('grade',DropdownFilter),('section',DropdownFilter))
     
-class teacheradmin(admin.ModelAdmin):
+class teacheradmin(ModelAdmin):
     list_display=('first_name', 'school')
     list_filter=(('school',DropdownFilter),('grade',DropdownFilter))
 # Register your models here.
 
-class useradmin(admin.ModelAdmin):
+class useradmin(ModelAdmin):
     search_fields=('username',)
     list_filter=(('is_student',DropdownFilter),('is_teacher',DropdownFilter),)
     
@@ -56,7 +58,7 @@ admin.site.register(KreativityShow)
 admin.site.register(SchoolContract)
 admin.site.register(SchoolGallery)
 
-class UserActivityAdmin(admin.ModelAdmin):
+class UserActivityAdmin(ModelAdmin):
     list_display = ('user', 'login_time', 'logout_time', 'duration')
 
 admin.site.register(UserActivity, UserActivityAdmin)
@@ -151,7 +153,7 @@ class SectionFilter(admin.SimpleListFilter):
         return queryset
 
 @admin.register(UserLoginActivity)
-class UserLoginActivityAdmin(admin.ModelAdmin):
+class UserLoginActivityAdmin(ModelAdmin):
     list_display = ('login_username', 'get_student_name','get_grade','get_section','login_datetime','login_num')
     list_filter = (SchoolFilter, ClassFilter, SectionFilter)
     actions = ['export_as_excel']

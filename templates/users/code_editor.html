@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}Contact Us{% endblock %}
+{% block body %}
+<body>
+    <h1>Python Code Environment</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <textarea id="editor">{{ form.code.value }}</textarea>
+        <button type="button" id="run-code">Run Code</button>
+    </form>
+
+    <div id="terminal"></div>
+
+    <script>
+        // Initialize CodeMirror on the textarea
+        var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+            lineNumbers: true,
+            mode: "python",
+            theme: "default",
+            matchBrackets: true,
+            autoCloseBrackets: true,
+        });
+
+        // WebSocket connection to the terminal
+        const terminal = document.getElementById('terminal');
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/terminal/');
+
+        socket.onmessage = function(event) {
+            const message = document.createElement('p');
+            message.textContent = event.data;
+            terminal.appendChild(message);
+            terminal.scrollTop = terminal.scrollHeight;
+        };
+
+        document.getElementById('run-code').onclick = function() {
+            const code = editor.getValue();
+            socket.send(code);
+        };
+    </script>
+</body>
+{% endblock %}

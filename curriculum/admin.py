@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 from django_admin_listfilter_dropdown.filters import DropdownFilter, RelatedDropdownFilter, ChoiceDropdownFilter
+from unfold.admin import ModelAdmin
 
 # Register your models here.
 class standardadmin(admin.ModelAdmin):
@@ -15,11 +16,12 @@ def make_subject_not_displayable(modeladmin, request, queryset):
 make_subject_displayable.short_description = "Mark selected subjects as displayable"
 make_subject_not_displayable.short_description = "Mark selected subjects as not displayable"
 
-class subjectadmin(admin.ModelAdmin):
+class subjectadmin(ModelAdmin):
     list_display=['name','standard','display_on_frontend']
     search_fields=('name',)
     list_filter=(('name', DropdownFilter),
-        ('standard', RelatedDropdownFilter))
+        ('standard', RelatedDropdownFilter), ('schools', RelatedDropdownFilter))
+    filter_horizontal = ('schools',)
         
     actions = [make_subject_displayable, make_subject_not_displayable]
 
@@ -32,17 +34,21 @@ def make_not_displayable(modeladmin, request, queryset):
 make_displayable.short_description = "Mark selected lessons as displayable"
 make_not_displayable.short_description = "Mark selected lessons as not displayable"
 
-class lessonadmin(admin.ModelAdmin):
+class lessonadmin(ModelAdmin):
     list_display=['name','subject','Standard','display_on_frontend']
     # list_filter=['Standard','subject',]
-    list_filter=(('name', DropdownFilter),
+    list_filter = (
+        ('name', DropdownFilter),
         ('Standard', RelatedDropdownFilter),
-        ('subject', RelatedDropdownFilter)
-        )
+        ('subject', RelatedDropdownFilter),
+        ('schools', RelatedDropdownFilter),
+        ('schools', RelatedDropdownFilter)
+    )
     search_fields=('name',)
     actions = [make_displayable, make_not_displayable]
+    filter_horizontal = ('schools',)
     
-class mechanzolessonadmin(admin.ModelAdmin):
+class mechanzolessonadmin(ModelAdmin):
     list_display=['model_id','model_name']
     # list_filter=['Standard','subject',]
     list_filter=(('kit', RelatedDropdownFilter),
@@ -62,6 +68,7 @@ admin.site.register(StudentResult)
 admin.site.register(Mechanzo_kit_name)
 admin.site.register(Mechanzo_model_name,mechanzolessonadmin)
 admin.site.register(Topicwise_Marks)
+admin.site.register(School)
 
 def make_subject_displayable(modeladmin, request, queryset):
     queryset.update(display_on_frontend=True)
@@ -72,7 +79,7 @@ def make_subject_not_displayable(modeladmin, request, queryset):
 make_subject_displayable.short_description = "Mark selected subjects as displayable"
 make_subject_not_displayable.short_description = "Mark selected subjects as not displayable"
 
-class teachersubjectadmin(admin.ModelAdmin):
+class teachersubjectadmin(ModelAdmin):
     list_display=['name','display_on_frontend']
     search_fields=('name',)
         
@@ -87,7 +94,7 @@ def make_not_displayable(modeladmin, request, queryset):
 make_displayable.short_description = "Mark selected lessons as displayable"
 make_not_displayable.short_description = "Mark selected lessons as not displayable"
 
-class teacherlessonadmin(admin.ModelAdmin):
+class teacherlessonadmin(ModelAdmin):
     list_display=['name','subject','display_on_frontend']
     # list_filter=['Standard','subject',]
     list_filter=(('name', DropdownFilter),
