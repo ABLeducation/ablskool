@@ -26,7 +26,8 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('assessment/', include(('assessment.urls', 'assessment'), namespace='assessment')),
     path('ebook/', include(('ebook.urls', 'ebook'), namespace='ebook')),
-    path('silk/', include('silk.urls', namespace='silk'))
+    path('silk/', include('silk.urls', namespace='silk')),
+    path('', include('pwa.urls')),
 ]
 
 urlpatterns += [path('i18n/', include('django.conf.urls.i18n'))]

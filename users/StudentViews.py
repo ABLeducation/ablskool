@@ -85,6 +85,8 @@ def student_home(request,subject_id=None):
         average_percentage = (average_score / 100) * 100
     else:
         average_percentage = 0
+        
+    quizzes = Quiz.objects.filter(start_date__lte=timezone.now(), end_date__gte=timezone.now())
     
     context={
         "total_attendance": total_subjects,
@@ -97,7 +99,8 @@ def student_home(request,subject_id=None):
         "profile":student_obj,
         # "recent_visit":actionTime,
         "unread_notifications":unread_notifications,
-        "logs":logs
+        "logs":logs,
+        "quizzes":quizzes
     }
     return render(request, "student_template/student_home_template.html", context)
 
@@ -223,7 +226,7 @@ def student_profile_update(request):
 def student_report(request):
     student=user_profile_student.objects.get(user=request.user)
     students=StudentResult.objects.filter(student_id=student)
-    results=Result.objects.filter(user=request.user)
+    results=Result.objects.filter(user=request.user).order_by("-date_attempted")
     return render(request, 'student_template/studentreport.html', {'students': students,'results':results,"profile":student})
     
 def student_feedback(request):
@@ -341,3 +344,10 @@ def student_activity_view(request, user_id):
         'user_id': user_id
     }
     return render(request, 'student_template/student_activity.html', context)
+
+def SampleProjectReport(request):
+    student=user_profile_student.objects.get(user=request.user)
+    school=student.school
+    sampleproject=ProjectSample.objects.filter(school__icontains=school)
+    print(f'project Sample-{sampleproject}')
+    return render(request, "student_template/sampleproject.html",{'sampleproject': sampleproject})

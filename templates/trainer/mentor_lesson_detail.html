@@ -51,13 +51,17 @@
                         {% else %}
                         <p class="card-text" > No assessment available</p>
                         {% endif %}
-                      </center>
+                    </center>
                 </div>
             </div>
         </div>
+        <div class="mt-2">
+            <form method="POST" >
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Mark as Completed</button>
+            </form>
+        </div>
     </div>
 </section>
-
-<hr class="my-5" style="color:#ff5722;">
 
 {%endblock%}

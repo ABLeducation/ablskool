@@ -85,6 +85,7 @@ admin.site.register(User, CustomUserAdmin)
 admin.site.register(ObservationSheet)
 admin.site.register(CurriculumView)
 admin.site.register(UserActivity1)
+admin.site.register(ProjectSample)
 
 class SchoolFilter(admin.SimpleListFilter):
     title = _('school')
