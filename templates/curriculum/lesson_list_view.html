@@ -10,45 +10,68 @@
         <div class="col-md-5">
             <div class="accordion" id="lessonAccordion">
                 {% for lesson in filtered_lessons %}
-                <div class="card mb-3 shadow-sm border-0">
-                    <div class="card-header d-flex justify-content-between align-items-center bg-white" id="heading{{ lesson.id }}">
+                <div class="card mb-3 shadow-sm border-0 rounded">
+                    <div class="card-header d-flex justify-content-between align-items-center bg-light" id="heading{{ lesson.id }}">
                         <h5 class="mb-0">
-                            <button class="btn btn-link text-dark font-weight-bold" type="button" onclick="toggleDropdown({{ lesson.id }})" aria-expanded="false" aria-controls="collapse{{ lesson.id }}">
+                            <button class="btn btn-link text-primary font-weight-bold" type="button" onclick="toggleDropdown({{ lesson.id }})" aria-expanded="false" aria-controls="collapse{{ lesson.id }}">
                                 Chapter-{{ lesson.position }}: {{ lesson.name }}
                             </button>
                         </h5>
-                        <button class="btn btn-primary btn-sm" type="button" onclick="toggleDropdown({{ lesson.id }})">
+                        <button class="btn btn-info btn-sm" type="button" onclick="toggleDropdown({{ lesson.id }})">
                             <i class="fas fa-chevron-down"></i>
                         </button>
                     </div>
 
                     <div id="collapse{{ lesson.id }}" class="collapse" aria-labelledby="heading{{ lesson.id }}">
                         <div class="card-body">
-                            <ul class="list-group">
-                              <li class="list-group-item">
-                                {% if lesson.ppt %}
-                                <a href="javascript:void(0);" onclick="loadContent('{{ lesson.ppt.url }}', 'notes')">
-                                    <span class="badge bg-success">Pre-requisite</span>
-                                </a>
-                                {% else %}
-                                      <p class="text-muted">Pre-requisite not available</p>
-                                {% endif %}
-                              </li>
-                                <li class="list-group-item">
-                                    <a href="javascript:void(0);" onclick="loadContent('{{ lesson.video1 }}', 'video')">
-                                        Watch Video
-                                    </a>
-                                </li>
-                                <li class="list-group-item">
-                                    {% if lesson.assessment %}
-                                        <a href="javascript:void(0);" onclick="loadContent('{{ lesson.assessment }}', 'quiz')">
-                                            Take Quiz
-                                        </a>
-                                    {% else %}
-                                        <p class="text-muted">Quiz not available</p>
-                                    {% endif %}
-                                </li>
-                            </ul>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!-- Prerequisite and Video -->
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            {% if lesson.ppt %}
+                                                <a href="javascript:void(0);" onclick="loadContent('{{ lesson.ppt.url }}', 'notes')">
+                                                    <span class="badge bg-success">Pre-requisite</span>
+                                                </a>
+                                            {% else %}
+                                                <p class="text-muted">Not Available</p>
+                                            {% endif %}
+                                        </li>
+                                        <li class="list-group-item">
+                                            {% if lesson.video1 %}
+                                                <a href="javascript:void(0);" onclick="loadContent('{{ lesson.video1 }}', 'video')">
+                                                    <span class="badge bg-primary">Watch Video</span>
+                                                </a>
+                                            {% else %}
+                                                <p class="text-muted">Not Available</p>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Assignment and Learning Aids -->
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            {% if lesson.assessment %}
+                                                <a href="javascript:void(0);" onclick="loadContent('{{ lesson.assessment }}', 'quiz')">
+                                                    <span class="badge bg-warning">Assignment</span>
+                                                </a>
+                                            {% else %}
+                                                <p class="text-muted">Quiz not available</p>
+                                            {% endif %}
+                                        </li>
+                                        <li class="list-group-item">
+                                            {% if lesson.materials %}
+                                                <a href="javascript:void(0);" onclick="loadContent('{{ lesson.materials }}', 'materials')">
+                                                    <span class="badge bg-info">Learning Aids</span>
+                                                </a>
+                                            {% else %}
+                                                <p class="text-muted">Not Available</p>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -58,7 +81,7 @@
 
         <!-- Right Column: Display Video or Quiz -->
         <div class="col-md-7">
-            <div id="lessonContent" class="p-3 shadow-sm border">
+            <div id="lessonContent" class="p-4 shadow-sm border rounded">
                 <h4>Select an option to view content</h4>
                 <div id="lessonDisplayContent" class="mt-4">
                     <!-- Video or Quiz will be embedded here dynamically -->
@@ -73,18 +96,39 @@
     .btn-link {
         text-decoration: none;
         transition: all 0.2s ease-in-out;
+        font-size: 1.2rem;
     }
     .btn-link:hover {
         color: #ff5722;
+        text-decoration: underline;
     }
     .card-body {
-        background-color: #f9f9f9;
+        background-color: #f1f1f1;
         border-top: 2px solid #ff5722;
-        border-radius: 0 0 8px 8px;
+        border-radius: 0 0 10px 10px;
         padding: 20px;
     }
+    .accordion .card-header {
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
     .accordion .card-header:hover {
-        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        background-color: #e2e6ea;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .card-body ul {
+        padding-left: 0;
+    }
+    .list-group-item {
+        border: none;
+        padding: 15px;
+        background-color: #fff;
+    }
+    .badge {
+        font-size: 1rem;
+        padding: 0.5em 1em;
+        border-radius: 1.5em;
+        color: #fff;
     }
 </style>
 
@@ -123,6 +167,19 @@
                 <iframe width="100%" height="400" src="${url}" frameborder="0"></iframe>
             `;
         }
+        else if (type === 'notes') {
+          // Embed notes
+          contentEmbed = `
+              <h5>Pre-requisite</h5>
+              <iframe width="100%" height="400" src="${url}" frameborder="0"></iframe>
+          `;
+        } else if (type === 'materials') {
+          // Embed materials
+          contentEmbed = `
+              <h5>Learning Aids</h5>
+              <iframe width="100%" height="400" src="${url}" frameborder="0"></iframe>
+          `;
+      }
 
         // Display the content in the right section
         document.getElementById('lessonDisplayContent').innerHTML = contentEmbed;
